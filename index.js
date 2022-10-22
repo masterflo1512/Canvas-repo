@@ -7,40 +7,57 @@ let currentLineStartPointPosition = [];
 let lines = [];
 
 
-canvas.addEventListener('click', drawLine);
-
-function getCursorPosition(e) {
-    const rect = canvas.getBoundingClientRect()
-    x = e.clientX - rect.left;
-    y = e.clientY - rect.top;
-    return [x, y];
+class Point {
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
+    }
+    getCursorPosition(e) {
+        const rect = canvas.getBoundingClientRect()
+        x = e.clientX - rect.left;
+        y = e.clientY - rect.top;
+        return [x, y];
+    }
 }
 
-function drawLine(e) {
-    let [x, y] = getCursorPosition(e);
-    let pointsIntersection = {};
-    if (!isFirstPointSelected) {
-        isFirstPointSelected = true;
-        currentLineStartPointPosition = [x, y];
 
-    } else {
-        context.beginPath();
-        context.moveTo(currentLineStartPointPosition[0], currentLineStartPointPosition[1]);
-        context.lineTo(x, y);
-        context.lineWidth = 1;
-        context.stroke();
-        isFirstPointSelected = false;
-        
-        for (let i = 0; i < lines.length; i++) {
-            console.log(lines);
-            pointsIntersection = lineIntersect(currentLineStartPointPosition[0], currentLineStartPointPosition[1], x, y, lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2); 
-            drawCircle(pointsIntersection);
-            context.strokeStyle = "black";
-            context.lineWidth = 1;
-        }  
-        lines.push({ x1: currentLineStartPointPosition[0], y1: currentLineStartPointPosition[1], x2: x, y2: y });     
+class Line {
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
     }
-};
+
+    
+    drawLine() {
+        
+        let [x, y] = getCursorPosition(e);
+        let pointsIntersection = {};
+        canvas.addEventListener('click', e =>{
+            if (!isFirstPointSelected) {
+                isFirstPointSelected = true;
+                currentLineStartPointPosition = [x, y];
+    
+            } else {
+            context.beginPath();
+            context.moveTo(currentLineStartPointPosition[0], currentLineStartPointPosition[1]);
+            context.lineTo(x, y);
+            context.lineWidth = 1;
+            context.stroke();
+            isFirstPointSelected = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                console.log(lines);
+                pointsIntersection = lineIntersect(currentLineStartPointPosition[0], currentLineStartPointPosition[1], x, y, lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2); 
+                drawCircle(pointsIntersection);
+                context.strokeStyle = "black";
+                context.lineWidth = 1;
+            }  
+            lines.push({ x1: currentLineStartPointPosition[0], y1: currentLineStartPointPosition[1], x2: x, y2: y });     
+        }
+    })
+    };
+}
+
 
 function drawCircle({x,y}) {
     context.beginPath();
