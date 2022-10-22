@@ -1,6 +1,7 @@
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 
+
 let isFirstPointSelected = false;
 let position = [];
 let lines = [];
@@ -95,3 +96,7 @@ function lineIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
     }
     return {x: x, y: y};
 }
+
+document.getElementById('collapse').addEventListener('click', () =>{
+    context.clearRect(0, 0, canvas.width, canvas.height);
+})
