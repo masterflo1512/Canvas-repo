@@ -46,8 +46,9 @@ function drawLine(e) {
 function drawCircle({ x, y }) {
     context.beginPath();
     context.arc(x, y, 5, 0, 2 * Math.PI, false);
-    context.lineWidth = 5;
+    context.lineWidth = 3;
     context.strokeStyle = "red";
+    context.fillStyle = "red"
     context.stroke();
     context.fill();
 }
