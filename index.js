@@ -10,12 +10,14 @@ let lines = [];
 
 canvas.addEventListener('click', drawLine);
 
+
 function getCursorPosition(e) {
     const rect = canvas.getBoundingClientRect()
     x = e.clientX - rect.left;
     y = e.clientY - rect.top;
     return [x, y];
 }
+
 
 function drawLine(e) {
     let [x, y] = getCursorPosition(e);
@@ -43,10 +45,30 @@ function drawLine(e) {
     }
 };
 
+const mouseDownListener = (e) => {
+    currentLineStartPointPosition = getCursorPosition(e);
+    isFirstPointSelected = true;
+ }
+
+ const mouseMoveListener = (e) => {
+    if(!currentLineStartPointPosition) return;
+    lines = getCursorPosition(e);
+    drawLine();
+  }
+  
+  const mouseupListener = (e) => {
+    isFirstPointSelected = false;
+  }
+
+canvas.addEventListener('mousedown', mouseDownListener);
+canvas.addEventListener('mousemove', mouseMoveListener);
+canvas.addEventListener('mouseup', mouseupListener);
+
+
 function drawCircle({ x, y }) {
     context.beginPath();
-    context.arc(x, y, 5, 0, 2 * Math.PI, false);
-    context.lineWidth = 3;
+    context.arc(x, y, 3, 0, 2 * Math.PI, false);
+    context.lineWidth = 1;
     context.strokeStyle = "red";
     context.fillStyle = "red"
     context.stroke();
@@ -99,4 +121,7 @@ function lineIntersect(x1, y1, x2, y2, x3, y3, x4, y4) {
 document.getElementById('collapse').addEventListener('click', () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 })
+
+
+
 
